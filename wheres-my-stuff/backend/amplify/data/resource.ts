@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { searchFn } from "../functions/search/resource";
 
 /**
  * Inventory data model — multi-user-ready from day one.
@@ -58,6 +59,25 @@ const schema = a.schema({
     })
     .secondaryIndexes((index) => [index("itemId")])
     .authorization((allow) => [allow.owner()]),
+
+  // Custom type returned by the searchItems query.
+  SearchResult: a.customType({
+    id: a.string(),
+    name: a.string(),
+    location: a.string(),
+    quantity: a.integer(),
+    score: a.float(),
+  }),
+
+  // Synonym-aware search across name, tags, and OCR text. Backed by the
+  // `search` Lambda which replicates the Python query/handler.py logic in
+  // TypeScript (so it runs inside Amplify AppSync without a Python layer).
+  searchItems: a
+    .query()
+    .arguments({ query: a.string().required() })
+    .returns(a.ref("SearchResult").array())
+    .handler(a.handler.function(searchFn))
+    .authorization((allow) => [allow.authenticated()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

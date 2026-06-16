@@ -1,8 +1,10 @@
-/// Search results returned by the `query` Lambda.
+import '../../data/item_repository.dart';
+
+/// Search result returned to the Find screen.
 class MatchResult {
   final String id;
   final String name;
-  final String location; // breadcrumb, e.g. "Garage > Wall shelf B > Bin 3"
+  final String location;
   final int? quantity;
 
   const MatchResult({
@@ -11,29 +13,32 @@ class MatchResult {
     required this.location,
     this.quantity,
   });
-
-  factory MatchResult.fromJson(Map<String, dynamic> json) => MatchResult(
-        id: json['id'] as String? ?? '',
-        name: json['name'] as String? ?? '',
-        location: json['location'] as String? ?? '',
-        quantity: json['quantity'] as int?,
-      );
 }
 
-/// Talks to the backend `query` Lambda (via AppSync) and falls back to the local
-/// SQLite cache when offline. Wired to Amplify API once the backend is deployed.
+/// Searches the inventory using synonym-aware ranked matching.
+///
+/// Currently delegates to [ItemRepository] which runs against the in-memory
+/// mock DB. Once deployed, swap the body to call the AppSync custom query:
+///
+/// ```dart
+/// final result = await Amplify.API.query(request: GraphQLRequest<String>(
+///   document: searchItemsQuery,
+///   variables: {'query': query},
+/// )).response;
+/// // parse result.data into List<MatchResult>
+/// ```
 class InventoryRepository {
+  final _itemRepo = ItemRepository();
+
   Future<List<MatchResult>> search(String query) async {
-    // TODO: call Amplify.API GraphQL `searchItems(query:)` -> rank_matches.
-    // Placeholder so the UI runs before the backend is deployed.
-    if (query.trim().isEmpty) return const [];
-    return const [
-      MatchResult(
-        id: 'demo',
-        name: 'wire nuts',
-        location: 'Garage > Wall shelf B > Bin 3',
-        quantity: 100,
-      ),
-    ];
+    final results = await _itemRepo.search(query);
+    return results
+        .map((r) => MatchResult(
+              id: r.id,
+              name: r.name,
+              location: r.location,
+              quantity: r.quantity,
+            ))
+        .toList();
   }
 }

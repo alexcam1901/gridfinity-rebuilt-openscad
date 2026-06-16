@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'features/search/search_screen.dart';
 import 'features/capture/capture_screen.dart';
+import 'features/locations/locations_screen.dart';
+import 'features/search/search_screen.dart';
 
 // NOTE: Amplify initialization is intentionally deferred until the backend is
 // deployed (`ampx sandbox` generates `amplify_outputs.dart`). Once present, wrap
@@ -34,7 +35,11 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   int _index = 0;
 
-  static const _tabs = [SearchScreen(), CaptureScreen()];
+  static const _tabs = [
+    SearchScreen(),
+    LocationsScreen(),
+    CaptureScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +50,7 @@ class _HomeShellState extends State<HomeShell> {
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: const [
           NavigationDestination(icon: Icon(Icons.search), label: 'Find'),
+          NavigationDestination(icon: Icon(Icons.shelves), label: 'Browse'),
           NavigationDestination(icon: Icon(Icons.add_a_photo), label: 'Add'),
         ],
       ),

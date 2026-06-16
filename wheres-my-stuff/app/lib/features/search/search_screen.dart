@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../data/item_repository.dart';
+import '../items/item_detail_screen.dart';
 import 'inventory_repository.dart';
 
 /// "Where is X" screen: type or speak a query, get ranked matches with a
 /// location breadcrumb. Voice uses on-device speech_to_text for low latency;
-/// the actual search runs server-side via the `query` Lambda (synonym-aware).
+/// the actual search runs synonym-aware matching (mirrors query Lambda logic).
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -15,16 +17,35 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final _controller = TextEditingController();
   final _repo = InventoryRepository();
+  final _itemRepo = ItemRepository();
   List<MatchResult> _results = const [];
   bool _loading = false;
 
   Future<void> _run() async {
     setState(() => _loading = true);
     final results = await _repo.search(_controller.text);
-    if (mounted) setState(() {
-      _results = results;
-      _loading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _results = results;
+        _loading = false;
+      });
+    }
+  }
+
+  Future<void> _openItem(MatchResult match) async {
+    final item = await _itemRepo.findById(match.id);
+    if (item != null && mounted) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => ItemDetailScreen(item: item)),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,7 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.mic),
-                  // TODO: wire speech_to_text -> _controller -> _run().
+                  // TODO: wire speech_to_text -> _controller.text -> _run().
                   onPressed: _run,
                 ),
               ),
@@ -52,20 +73,46 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(height: 12),
             if (_loading) const LinearProgressIndicator(),
             Expanded(
-              child: ListView.builder(
-                itemCount: _results.length,
-                itemBuilder: (_, i) {
-                  final m = _results[i];
-                  return ListTile(
-                    title: Text(m.name),
-                    subtitle: Text(m.location),
-                    trailing: m.quantity == null ? null : Text('×${m.quantity}'),
-                  );
-                },
-              ),
+              child: _results.isEmpty && !_loading
+                  ? const _EmptyState()
+                  : ListView.builder(
+                      itemCount: _results.length,
+                      itemBuilder: (_, i) {
+                        final m = _results[i];
+                        return ListTile(
+                          title: Text(m.name),
+                          subtitle: Text(m.location),
+                          trailing: m.quantity == null
+                              ? null
+                              : Text('×${m.quantity}'),
+                          onTap: () => _openItem(m),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.search,
+              size: 48, color: Theme.of(context).colorScheme.outline),
+          const SizedBox(height: 12),
+          Text('Try "wire nuts", "drill", or "batteries"',
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.outline)),
+        ],
       ),
     );
   }
