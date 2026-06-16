@@ -1,0 +1,39 @@
+name: wheres_my_stuff
+description: Voice + image home/garage inventory — find your stuff by asking.
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Amplify (auth + GraphQL/DynamoDB + S3) — single user now, multi-user ready.
+  amplify_flutter: ^2.0.0
+  amplify_auth_cognito: ^2.0.0
+  amplify_api: ^2.0.0
+  amplify_storage_s3: ^2.0.0
+
+  # Capture + voice
+  camera: ^0.11.0
+  image_picker: ^1.1.0
+  speech_to_text: ^7.0.0
+
+  # Offline cache (browse/search without network)
+  drift: ^2.18.0
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.1.0
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  drift_dev: ^2.18.0
+  build_runner: ^2.4.0
+
+flutter:
+  uses-material-design: true
