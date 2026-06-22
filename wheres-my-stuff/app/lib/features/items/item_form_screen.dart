@@ -44,14 +44,14 @@ class _ItemFormScreenState extends State<ItemFormScreen> {
   late final _gridCtrl =
       TextEditingController(text: widget.existing?.gridfinityRef ?? '');
 
-  String? _locationId =
-      widget.existing?.locationId ?? widget.initialLocationId;
+  String? _locationId;
   String _locationLabel = 'None';
   bool _saving = false;
 
   @override
   void initState() {
     super.initState();
+    _locationId = widget.existing?.locationId ?? widget.initialLocationId;
     _refreshLocationLabel();
   }
 
