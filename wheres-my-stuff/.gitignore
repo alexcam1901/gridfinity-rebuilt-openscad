@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Eval outputs (generated)
+eval/scorecard.md
+eval/scorecard.csv
+
+# Node / Amplify
+backend/node_modules/
+backend/.amplify/
+backend/amplify_outputs*.json
+
+# Flutter
+app/.dart_tool/
+app/build/
+app/.flutter-plugins*
+app/amplify_outputs.dart

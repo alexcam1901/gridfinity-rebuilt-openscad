@@ -1,0 +1,25 @@
+{
+  "_comment": "Equivalence groups for inventory search + eval fuzzy matching. Each inner list is a set of terms treated as the same thing. Edit freely; both eval/ and the query Lambda load this file.",
+  "groups": [
+    ["wire nuts", "wire connectors", "twist caps", "wire caps", "marrettes"],
+    ["zip ties", "cable ties", "zap straps", "tie wraps"],
+    ["allen keys", "allen wrenches", "hex keys", "hex wrenches"],
+    ["screwdriver", "driver"],
+    ["pliers", "channel locks", "channellocks"],
+    ["sandpaper", "sanding sheets", "abrasive paper"],
+    ["duct tape", "gaffer tape"],
+    ["painters tape", "masking tape"],
+    ["drill bits", "twist bits"],
+    ["wood screws", "deck screws"],
+    ["machine screws", "bolts"],
+    ["washers", "flat washers"],
+    ["nuts", "hex nuts"],
+    ["anchors", "wall anchors", "drywall anchors"],
+    ["batteries", "cells"],
+    ["light bulbs", "bulbs", "lamps"],
+    ["extension cord", "power cord"],
+    ["tape measure", "measuring tape"],
+    ["utility knife", "box cutter", "exacto", "x-acto"],
+    ["wd-40", "wd40", "penetrating oil"]
+  ]
+}

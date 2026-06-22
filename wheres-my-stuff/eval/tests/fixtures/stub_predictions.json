@@ -1,0 +1,20 @@
+{
+  "wirenuts.jpg": {
+    "name": "wire connectors",
+    "category": "electrical",
+    "tags": ["electrical", "connectors", "blue"],
+    "ocr_text": "WIRE CONNECTORS 100 PACK"
+  },
+  "zipties.jpg": {
+    "name": "cable ties",
+    "category": "fasteners",
+    "tags": ["cable", "black", "fasteners"],
+    "ocr_text": "CABLE TIES"
+  },
+  "drill.jpg": {
+    "name": "screwdriver",
+    "category": "power tools",
+    "tags": ["drill", "20v", "makita"],
+    "ocr_text": ""
+  }
+}

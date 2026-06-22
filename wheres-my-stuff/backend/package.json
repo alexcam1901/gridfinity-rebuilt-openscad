@@ -1,0 +1,21 @@
+{
+  "name": "wheres-my-stuff-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "sandbox": "npx ampx sandbox",
+    "generate": "npx ampx generate graphql-client-code --out ../app/lib/graphql",
+    "pipeline-deploy": "npx ampx pipeline-deploy"
+  },
+  "dependencies": {
+    "@aws-amplify/backend": "^1.0.0",
+    "@aws-amplify/backend-cli": "^1.0.0",
+    "aws-cdk-lib": "^2.150.0",
+    "constructs": "^10.3.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0"
+  }
+}

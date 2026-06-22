@@ -1,0 +1,5 @@
+# Gold set: one JSON object per line. Put the matching photos in eval/gold/.
+# Lines starting with # and blank lines are ignored. Grow this whenever the app
+# misidentifies something. Fields: id, image, name, category, tags, ocr_text, name_aliases.
+{"id": "sample-wirenuts", "image": "gold/wirenuts.jpg", "name": "wire nuts", "category": "electrical", "tags": ["electrical", "connectors", "wiring"], "ocr_text": "WIRE CONNECTORS", "name_aliases": ["wire connectors"]}
+{"id": "sample-drill", "image": "gold/drill.jpg", "name": "cordless drill", "category": "power tools", "tags": ["drill", "20v", "battery"], "ocr_text": ""}

@@ -1,0 +1,6 @@
+# Personal gold-set photos are not committed. Keep the folder + docs only.
+*.jpg
+*.jpeg
+*.png
+*.webp
+!README.md
